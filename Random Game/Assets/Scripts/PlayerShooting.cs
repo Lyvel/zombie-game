@@ -6,6 +6,8 @@ public class PlayerShooting : MonoBehaviour
 {
 
     public WeaponBase CurrentWeapon;
+
+    public Transform ShootPoint;
     
     private void Update()
     {
@@ -30,6 +32,14 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Can shoot. (Firerate)");
             if (CurrentWeapon.CurrentLoadedAmmo > 0){
                 CurrentWeapon.CurrentLoadedAmmo--;
+
+                RaycastHit hit;
+                if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, CurrentWeapon.Range)){
+                    if (hit.transform.tag == "Enemy"){
+                        Debug.Log("Hit enemy!");
+                    }
+                }
+
                 Debug.Log("Can shoot. (Ammo)");
             } else {
                 Debug.Log("Can't shoot. (Ammo)");
