@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
+    public static PlayerShooting instance;
 
     public WeaponBase CurrentWeapon;
 
     public Transform ShootPoint;
-    
+
+    private void Start()
+    {
+        if (PlayerShooting.instance == null)
+            PlayerShooting.instance = this;
+    }
+
     private void Update()
     {
         if (CurrentWeapon.Automatic) if (Input.GetKey(KeyCode.Mouse0)) Shoot();
@@ -37,6 +44,7 @@ public class PlayerShooting : MonoBehaviour
                 if (Physics.Raycast(ShootPoint.position, ShootPoint.forward, out hit, CurrentWeapon.Range)){
                     if (hit.transform.tag == "Enemy"){
                         Debug.Log("Hit enemy!");
+                        hit.transform.GetComponent<EnemyHealth>().TakeDamage(CurrentWeapon.Damage);
                     }
                 }
 
